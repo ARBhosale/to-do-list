@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import iQ.learning.todoapp.model.Task;
-import iQ.learning.todoapp.model.request.TaskCreateRequest;
-import iQ.learning.todoapp.model.request.TaskUpdateRequest;
+import iQ.learning.todoapp.model.request.task.TaskCreateRequest;
+import iQ.learning.todoapp.model.request.task.TaskUpdateRequest;
 import iQ.learning.todoapp.service.TaskService;
 
 @CrossOrigin(origins = "http://localhost:8888")
@@ -38,7 +38,7 @@ public class TaskController {
 
 	@RequestMapping(path = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Task> updateStatus(@RequestBody TaskUpdateRequest updateRequest) {
-		Task newTask = taskService.setTaskStatus(updateRequest);
+		Task newTask = taskService.updateTask(updateRequest);
 		if (null == newTask) {
 			return new ResponseEntity<>(newTask, HttpStatus.NOT_FOUND);
 		}

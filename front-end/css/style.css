@@ -5,3 +5,13 @@ html, body {
     margin: 0px;      /*hides the body's scrolls*/
     font-family: 'Roboto', sans-serif;
 }
+
+.icon_file {
+    background-image: url("/front-end/img/icon_file.gif");
+}
+.icon_opened {
+    background-image: url("/front-end/img/icon_folder_opened.gif");
+}
+.icon_closed {
+    background-image: url("/front-end/img/icon_folder_closed.gif");
+}

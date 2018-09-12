@@ -7,11 +7,11 @@ html, body {
 }
 
 .icon_file {
-    background-image: url("/front-end/img/icon_file.gif");
+    background-image: url("../img/icon_file.gif");
 }
 .icon_opened {
-    background-image: url("/front-end/img/icon_folder_opened.gif");
+    background-image: url("../img/icon_folder_opened.gif");
 }
 .icon_closed {
-    background-image: url("/front-end/img/icon_folder_closed.gif");
+    background-image: url("../img/icon_folder_closed.gif");
 }

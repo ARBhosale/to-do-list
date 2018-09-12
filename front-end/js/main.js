@@ -78,6 +78,36 @@ doOnLoad = () => {
         }
     });
 
+    addToDo.attachEvent("onButtonClick", function(name, command){
+        if(name=="addToDoBtn"){
+            var values = addToDo.getFormData();
+            console.log(values);
+            var newData;
+            newData = {
+                "name": values.newToDo,
+                "description": values.toDoDescription
+            }
+            var addTask = "http://localhost:8080/task/v1";
+            var request = new Request(addTask, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify(newData)
+            });
+            fetch(request).then((response)=>{
+                console.log(response);
+            }
+                
+            ).catch()
+
+        }
+    });
+
+
+
     // Creating a Tree View.
     directoryTreeView = layout.cells("a").attachTreeView({
         json: "data/directory.json",

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import iQ.learning.todoapp.model.Task;
 import iQ.learning.todoapp.model.request.TaskCreateRequest;
+import iQ.learning.todoapp.model.request.TaskUpdateRequest;
 
 public interface TaskService {
 	Optional<Task> getTaskById(long id);
@@ -12,4 +13,6 @@ public interface TaskService {
 	List<Task> getAllTasks();
 	
 	Task createTask(TaskCreateRequest request);
+	
+	Task setTaskStatus(TaskUpdateRequest request);
 }

@@ -9,12 +9,14 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "Task")
 public class Task {
-	
-	public Task() {}
-	
+
+	public Task() {
+	}
+
 	public Task(@NotNull String name, String description) {
 		this.name = name;
 		this.description = description;
+		this.status = TaskStatus.New;
 	}
 
 	@Id
@@ -23,7 +25,16 @@ public class Task {
 	@NotNull
 	private String name;
 	private String description;
-//	private Folder folder;
+	private TaskStatus status;
+	// private Folder folder;
+
+	public TaskStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TaskStatus status) {
+		this.status = status;
+	}
 
 	public String getName() {
 		return name;
@@ -41,13 +52,13 @@ public class Task {
 		this.description = description;
 	}
 
-//	public Folder getFolder() {
-//		return folder;
-//	}
-//
-//	public void setFolder(Folder folder) {
-//		this.folder = folder;
-//	}
+	// public Folder getFolder() {
+	// return folder;
+	// }
+	//
+	// public void setFolder(Folder folder) {
+	// this.folder = folder;
+	// }
 
 	public Long getId() {
 		return id;

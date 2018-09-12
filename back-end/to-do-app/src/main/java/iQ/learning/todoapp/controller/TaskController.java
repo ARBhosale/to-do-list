@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import iQ.learning.todoapp.model.Task;
 import iQ.learning.todoapp.model.request.TaskCreateRequest;
+import iQ.learning.todoapp.model.request.TaskUpdateRequest;
 import iQ.learning.todoapp.service.TaskService;
 
 @RestController
@@ -30,6 +31,15 @@ public class TaskController {
 	@RequestMapping(path = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Task> createTask(@RequestBody TaskCreateRequest createRequest) {
 		Task newTask = taskService.createTask(createRequest);
+		return new ResponseEntity<>(newTask, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(path = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Task> updateStatus(@RequestBody TaskUpdateRequest updateRequest) {
+		Task newTask = taskService.setTaskStatus(updateRequest);
+		if (null == newTask) {
+			return new ResponseEntity<>(newTask, HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<>(newTask, HttpStatus.CREATED);
 	}
 

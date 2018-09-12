@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<items>
+    <item type="settings"  inputWidth="220"  position="label-left"  
+    labelWidth="100"/>
+    <item type="label"  label="Add a To Do"/>
+    <item type="input"  label="To Do Details"  name="newToDo"    offsetLeft="15"/>
+    <item type="button"     value="Submit"   offsetTop="15" offsetLeft="230"/>
+</items>

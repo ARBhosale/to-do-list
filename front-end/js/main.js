@@ -77,6 +77,13 @@ doOnLoad = () => {
         }
     });
 
+    // Creating a Tree View.
+    directoryTreeView = layout.cells("a").attachTreeView({
+        json: "data/directory.json",
+        iconset: "font_awesome",
+        dnd:true
+    });
+
 
 };
 

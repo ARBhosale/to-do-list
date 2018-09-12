@@ -1,0 +1,14 @@
+# Eclipse
+back-end/.metadata
+back-end/.classpath
+back-end/.project
+back-end/.settings/
+back-end/.recommenders
+back-end/RemoteSystemsTempFiles
+
+# Mac
+back-end/.DS_Store
+
+# Maven
+back-end/log/
+back-end/target/

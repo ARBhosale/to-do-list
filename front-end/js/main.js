@@ -3,7 +3,7 @@ doOnLoad = () => {
   // Creating a layout 
   layout  = new dhtmlXLayoutObject({
         parent: document.getElementById("layoutObj"),
-        pattern: "3L",
+        pattern: "4C",
         offsets: {          // optional, offsets for fullscreen init
             top:    10,     // you can specify all four sides
             right:  10,     // or only the side where you want to have an offset
@@ -25,7 +25,7 @@ doOnLoad = () => {
                 text: "",
                 collapsed_text: "Toolbar",
                 header: false,
-                height:40,
+                height:30,
                 collapse:false,        // collapse on init
                 fix_size: [null,true] // fix cell's size, [width,height]
             },
@@ -36,6 +36,13 @@ doOnLoad = () => {
                 header: true,
                 collapse:false,        // collapse on init
                 fix_size: [null,null]
+            },{
+                id:"d",
+                text:"",
+                collapsed_text: "",
+                header: false,
+                collapse:false,
+                height:300
             }
         ]
     });
@@ -51,26 +58,25 @@ doOnLoad = () => {
     toDoToolbar.addButton("addToDo", 1, "Add a To Do","",""); // addButton(id,pos,text,imgEnabled,imgDisabled); 
     toDoToolbar.addSeparator("seperator1", 2);
     toDoToolbar.addButton("addFolder", 3, "Add a Folder","","");
-
+    
 
     // Add To Do Window
+    addToDo = layout.cells("d").attachForm();
+    addToDo.loadStruct("data/addToDo.xml");
     toDoToolbar.attachEvent("onClick", function(id) {
         if(id === "addToDo"){
             console.log("add to button clicked");
-            var toDoWindows = new dhtmlXWindows();
-            var addToDoWindow = toDoWindows.createWindow("addToDoWin", 50, 50, 200, 200);
-            toDoWindows.window("addToDoWin").setText("Add a To Do");
-        }else{
-            addFolder = layout.cells("c").attachForm();
+            addToDo = layout.cells("d").attachForm();
+            addToDo.loadStruct("data/addToDo.xml");
             
+        }else if(id === "addFolder"){
+            addFolder = layout.cells("d").attachForm();
+            addFolder.loadStruct("data/addFolder.xml");
+        }else if(id === "viewToDos"){
+
         }
     });
 
-    // Add Folder form inside a cell
-    // addFolder = layout.cells("b").attachForm();
-    // toDoToolbar.button("addFolder").attachEvent("onClick",()=>{
-
-    // });
 
 };
 

@@ -64,7 +64,7 @@ doOnLoad = () => {
     // Add To Do Window
     var addToDo = layout.cells("d").attachForm();
     addToDo.loadStruct("data/addToDo.xml");
-    showToDoForm(addToDo)
+    showToDoForm(addToDo);
     toDoToolbar.attachEvent("onClick", function (id) {
         if (id === "addToDo") {
             console.log("add to button clicked");
@@ -75,6 +75,7 @@ doOnLoad = () => {
         } else if (id === "addFolder") {
             addFolder = layout.cells("d").attachForm();
             addFolder.loadStruct("data/addFolder.xml");
+            handleAddFolderSubmit(addFolder);
         } else if (id === "viewToDos") {
 
         }
@@ -190,6 +191,43 @@ function showToDoForm(addToDo){
                 directory.allTasks.push(data);
                 console.log(directory);
                 loadAllTasks(mygrid);
+            }).catch((error)=>{console.log(error);})
+
+        }
+    });
+
+    // Creating a Tree View.
+    loadDirectory(layout);
+
+};
+
+function handleAddFolderSubmit(addFolder){
+    addFolder.attachEvent("onButtonClick", function(name, command){
+        if(name=="addFolder"){
+            var values = this.getFormData();
+            console.log(values);
+            var newData;
+            newData = {
+                "name": values.newFolder
+            }
+            var addFolder = "http://localhost:8080/task/v1/folder";
+            var request = new Request(addFolder, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newData)
+            });
+            fetch(request)
+            .then((response)=>{
+                return response.json();
+            })
+            .then((data)=>{
+                directory.allFolders.push(data);
+                loadAllTasks(mygrid);
+                loadDirectory(layout);
             }).catch((error)=>{console.log(error);})
 
         }

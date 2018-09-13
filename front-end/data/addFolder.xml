@@ -4,5 +4,5 @@
     labelWidth="100"/>
     <item type="label"  label="Add a Folder"/>
     <item type="input"  label="Folder Name"  name="newFolder"    offsetLeft="15"/>
-    <item type="button"     value="Submit"   offsetTop="15" offsetLeft="230"/>
+    <item type="button"   name="addFolder"  value="Submit"   offsetTop="15" offsetLeft="230"/>
 </items>

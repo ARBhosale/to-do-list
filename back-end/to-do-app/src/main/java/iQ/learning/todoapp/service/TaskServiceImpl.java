@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import iQ.learning.todoapp.model.Folder;
 import iQ.learning.todoapp.model.Task;
 import iQ.learning.todoapp.model.TaskStatus;
 import iQ.learning.todoapp.model.request.task.TaskCreateRequest;
 import iQ.learning.todoapp.model.request.task.TaskUpdateRequest;
+import iQ.learning.todoapp.model.response.TasksFolderStructureResponse;
 import iQ.learning.todoapp.repository.*;
 
 @Service("taskService")
@@ -34,12 +36,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public List<Task> getAllTasks() {
-		Iterator<Task> iterator = taskRepository.findAll().iterator();
-		List<Task> allTasks = new ArrayList<Task>();
-		while (iterator.hasNext()) {
-			allTasks.add(iterator.next());
-		}
-		return allTasks;
+		return this.getList(taskRepository.findAll());
 	}
 
 	@Override
@@ -65,6 +62,22 @@ public class TaskServiceImpl implements TaskService {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public TasksFolderStructureResponse getDirectory() {
+		List<Task> allTasks = this.getList(taskRepository.findAll());
+		List<Folder> allFolders = this.getList(folderRepository.findAll());
+		return new TasksFolderStructureResponse(allTasks, allFolders);
+	}
+
+	private <T> List<T> getList(Iterable<T> iterable) {
+		Iterator<T> iterator = iterable.iterator();
+		List<T> allItems = new ArrayList<T>();
+		while (iterator.hasNext()) {
+			allItems.add(iterator.next());
+		}
+		return allItems;
 	}
 
 }

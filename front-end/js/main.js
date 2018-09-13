@@ -1,4 +1,6 @@
 var layout;
+var mygrid;
+var tasks;
 doOnLoad = () => {
     // Creating a layout 
     layout = new dhtmlXLayoutObject({
@@ -97,16 +99,16 @@ doOnLoad = () => {
                 },
                 body: JSON.stringify(newData)
             });
-            fetch(request).then((response) => {
-                console.log(response);
-            }
-
-            ).catch()
+            fetch(request)
+            .then((response)=>{
+                return response.json();
+            })
+            .then((data)=>{ 
+                loadAllTasks(mygrid);
+            }).catch((error)=>{console.log(error);})
 
         }
     });
-
-
 
     // Creating a Tree View.
     loadDirectory(layout);
@@ -117,11 +119,11 @@ function initializeGrid(layout) {
     mygrid = new dhtmlXGridObject('gridbox');
     //the path to images required by grid 
     mygrid.setImagePath("./codebase/imgs/");
-    mygrid.setHeader("Name,Description,Status");//the headers of columns  
-    mygrid.setInitWidths("150,250,150");          //the widths of columns  
-    mygrid.setColAlign("center,center,center");       //the alignment of columns   
-    mygrid.setColTypes("ro,ed,ed");                //the types of columns  
-    // mygrid.setColSorting("int,str,str,int");          //the sorting types   
+    mygrid.setHeader("Name,Description");//the headers of columns  
+    mygrid.setInitWidths("100,450");          //the widths of columns  
+    mygrid.setColAlign("center,center");
+    mygrid.attachEvent("onRowSelect",doOnRowSelected);       //the alignment of columns   
+    mygrid.setColTypes("ro,ed");                //the types of columns  
     mygrid.init();      //finishes initialization and renders the grid on the page 
     loadAllTasks(mygrid);
 }
@@ -241,7 +243,7 @@ function getDirectoryItemFromFolder(folderMap, folderId) {
         id: 'f' + folderData.folder.id,
         text: folderData.folder.name,
         kids: folderData.children.length > 0,
-        open: folderData.folder.parentFolderId == null ? 0 : 1,
+        open: folderData.folder.parentFolderId == null ? 1 : 0,
         items: getDirectoryItems(folderData)
     }
     return item;
@@ -276,5 +278,11 @@ function isFolder(item) {
     // folders have the field parentFolderId
     return item.parentFolderId != undefined;
 }
+function doOnRowSelected(id){
+    console.log(id);
+
+}
+
+
 
 

@@ -1,4 +1,6 @@
 var layout;
+var mygrid;
+var tasks;
 doOnLoad = () => {
     // Creating a layout 
     layout = new dhtmlXLayoutObject({
@@ -97,16 +99,16 @@ doOnLoad = () => {
                 },
                 body:JSON.stringify(newData)
             });
-            fetch(request).then((response)=>{
-                console.log(response);
-            }
-                
-            ).catch()
+            fetch(request)
+            .then((response)=>{
+                return response.json();
+            })
+            .then((data)=>{ 
+                loadAllTasks(mygrid);
+            }).catch((error)=>{console.log(error);})
 
         }
     });
-
-
 
     // Creating a Tree View.
     directoryTreeView = layout.cells("a").attachTreeView({
@@ -122,11 +124,11 @@ function initializeGrid(layout) {
     mygrid = new dhtmlXGridObject('gridbox');
     //the path to images required by grid 
     mygrid.setImagePath("./codebase/imgs/");
-    mygrid.setHeader("Name,Description,Status");//the headers of columns  
-    mygrid.setInitWidths("150,250,150");          //the widths of columns  
-    mygrid.setColAlign("center,center,center");       //the alignment of columns   
-    mygrid.setColTypes("ro,ed,ed");                //the types of columns  
-    // mygrid.setColSorting("int,str,str,int");          //the sorting types   
+    mygrid.setHeader("Name,Description");//the headers of columns  
+    mygrid.setInitWidths("100,450");          //the widths of columns  
+    mygrid.setColAlign("center,center");
+    mygrid.attachEvent("onRowSelect",doOnRowSelected);       //the alignment of columns   
+    mygrid.setColTypes("ro,ed");                //the types of columns  
     mygrid.init();      //finishes initialization and renders the grid on the page 
     loadAllTasks(mygrid);
 }
@@ -141,13 +143,25 @@ function loadAllTasks(grid) {
         .then(function (allTasks) {
             if (allTasks && allTasks.length > 0) {
                 allTasks.forEach((task)=>{
-                    tasksData.rows.push({id: task.id, data:[task.name, task.description, task.status]});
+                    tasksData.rows.push({
+                        id: task.id, 
+                        data:[
+                            task.name, 
+                            task.description
+                        ]
+                    });
                 });
                 mygrid.parse(tasksData, "json"); //takes the name and format of the data source
             }
         })
         .catch((error) => { console.error(error); });    
 }
+
+function doOnRowSelected(id){
+    console.log(id);
+
+}
+
 
 
 

@@ -1,7 +1,5 @@
 package iQ.learning.todoapp.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,7 +16,6 @@ public class Folder {
 	@NotNull
 	private String name;
 	Long parentFolderId;
-	Long[] childrenFolderIds;
 
 	public Folder() {
 	}
@@ -45,14 +42,6 @@ public class Folder {
 
 	public void setParentFolderId(Long parentFolderId) {
 		this.parentFolderId = parentFolderId;
-	}
-
-	public Long[] getChildrenFolderIds() {
-		return childrenFolderIds;
-	}
-
-	public void setChildrenFolderIds(Long[] childrenFolderIds) {
-		this.childrenFolderIds = childrenFolderIds;
 	}
 
 }

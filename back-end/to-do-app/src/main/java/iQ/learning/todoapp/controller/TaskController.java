@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import iQ.learning.todoapp.model.Task;
 import iQ.learning.todoapp.model.request.task.TaskCreateRequest;
 import iQ.learning.todoapp.model.request.task.TaskUpdateRequest;
+import iQ.learning.todoapp.model.response.TasksFolderStructureResponse;
 import iQ.learning.todoapp.service.TaskService;
 
 @CrossOrigin(origins = "http://localhost:8888")
@@ -43,6 +44,11 @@ public class TaskController {
 			return new ResponseEntity<>(newTask, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(newTask, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(path = "/directory", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<TasksFolderStructureResponse> getDirectory() {
+		return new ResponseEntity<>(taskService.getDirectory(), HttpStatus.CREATED);
 	}
 
 }

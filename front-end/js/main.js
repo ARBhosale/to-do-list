@@ -325,9 +325,9 @@ function getDirectoryItemFromFolder(folderMap, folderId) {
     let item = {
         id: 'f' + folderData.folder.id,
         text: folderData.folder.name,
-        kids: folderData.children.length > 0,
+        kids: true,
         open: folderData.folder.parentFolderId == null ? 1 : 0,
-        items: getDirectoryItems(folderData)
+        items: getDirectoryItems(folderMap, folderData)
     }
     return item;
 }
@@ -342,13 +342,13 @@ function getDirectoryItemFromTask(task) {
     return item;
 }
 
-function getDirectoryItems(folderData) {
+function getDirectoryItems(folderMap, folderData) {
     let items = [];
     for (let i = 0; i < folderData.children.length; i++) {
         let item = folderData.children[i];
         let directoryItem;
         if (isFolder(item)) {
-            directoryItem = getDirectoryItemFromFolder(item);
+            directoryItem = getDirectoryItemFromFolder(folderMap, item.id);
         } else {
             directoryItem = getDirectoryItemFromTask(item);
         }

@@ -24,6 +24,11 @@ public class Folder {
 		this.name = name;
 	}
 
+	public Folder(String name, Long parentFolderId) {
+		this.name = name;
+		this.parentFolderId = parentFolderId;
+	}
+
 	public String getName() {
 		return name;
 	}

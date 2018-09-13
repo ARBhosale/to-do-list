@@ -1,4 +1,4 @@
-package iQ.learning.todoapp.service;
+package iQ.learning.todoapp.service.task;
 
 import java.util.List;
 import java.util.Optional;

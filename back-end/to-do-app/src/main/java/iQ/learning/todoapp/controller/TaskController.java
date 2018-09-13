@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import iQ.learning.todoapp.model.Folder;
 import iQ.learning.todoapp.model.Task;
+import iQ.learning.todoapp.model.request.folder.FolderCreateRequest;
 import iQ.learning.todoapp.model.request.task.TaskCreateRequest;
 import iQ.learning.todoapp.model.request.task.TaskUpdateRequest;
 import iQ.learning.todoapp.model.response.TasksFolderStructureResponse;
-import iQ.learning.todoapp.service.TaskService;
+import iQ.learning.todoapp.service.folder.FolderService;
+import iQ.learning.todoapp.service.task.TaskService;
 
 @CrossOrigin(origins = "http://localhost:8888")
 @RestController
@@ -25,6 +28,9 @@ public class TaskController {
 
 	@Autowired
 	TaskService taskService;
+	
+	@Autowired
+	FolderService folderService;
 
 	@RequestMapping(path = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public List<Task> getTasks() {
@@ -49,6 +55,12 @@ public class TaskController {
 	@RequestMapping(path = "/directory", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<TasksFolderStructureResponse> getDirectory() {
 		return new ResponseEntity<>(taskService.getDirectory(), HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(path = "/folder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Folder> createTask(@RequestBody FolderCreateRequest createRequest) {
+		Folder newFolder = folderService.createFolder(createRequest);
+		return new ResponseEntity<>(newFolder, HttpStatus.CREATED);
 	}
 
 }

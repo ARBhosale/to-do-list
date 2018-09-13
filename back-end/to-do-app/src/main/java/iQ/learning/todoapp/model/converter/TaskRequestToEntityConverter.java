@@ -3,7 +3,7 @@ package iQ.learning.todoapp.model.converter;
 import org.springframework.core.convert.converter.Converter;
 
 import iQ.learning.todoapp.model.Task;
-import iQ.learning.todoapp.model.request.TaskCreateRequest;
+import iQ.learning.todoapp.model.request.task.TaskCreateRequest;
 
 public class TaskRequestToEntityConverter implements Converter<TaskCreateRequest, Task>{
 
@@ -12,6 +12,7 @@ public class TaskRequestToEntityConverter implements Converter<TaskCreateRequest
 		Task newTask = new Task();
 		newTask.setName(source.getName());
 		newTask.setDescription(source.getDescription());
+		newTask.setFolderId(source.getFolderId());
 		return newTask;
 	}
 

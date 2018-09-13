@@ -1,4 +1,6 @@
 var layout;
+const TASKS_API_URL = "http://localhost:8080/task/v1";
+const DIRECTORY_URL = TASKS_API_URL + '/directory';
 var mygrid;
 var directory;
 doOnLoad = () => {
@@ -198,39 +200,7 @@ function showToDoForm(addToDo){
 
 };
 
-function initializeGrid(layout) {
-    mygrid = new dhtmlXGridObject('gridbox');
-    //the path to images required by grid 
-    mygrid.setImagePath("./codebase/imgs/");
-    mygrid.setHeader("Name,Description");//the headers of columns  
-    mygrid.setInitWidths("100,450");          //the widths of columns  
-    mygrid.setColAlign("center,center");
-    mygrid.attachEvent("onRowSelect",doOnRowSelected);       //the alignment of columns   
-    mygrid.setColTypes("ro,ed");                //the types of columns  
-    mygrid.init();      //finishes initialization and renders the grid on the page 
-    loadAllTasks(mygrid);
-}
 
-const TASKS_API_URL = "http://localhost:8080/task/v1";
-const DIRECTORY_URL = TASKS_API_URL + '/directory';
-
-function loadAllTasks(grid) {
-    var allTasksApiUrl = TASKS_API_URL;
-    var tasksData = { rows: [] };
-    fetch(allTasksApiUrl)
-        .then((allTasksResponse) => {
-            return allTasksResponse.json();
-        })
-        .then(function (allTasks) {
-            if (allTasks && allTasks.length > 0) {
-                allTasks.forEach((task) => {
-                    tasksData.rows.push({ id: task.id, data: [task.name, task.description, task.status] });
-                });
-                mygrid.parse(tasksData, "json"); //takes the name and format of the data source
-            }
-        })
-        .catch((error) => { console.error(error); });
-}
 
 function loadDirectory(layout) {
     var directoryApiUrl = DIRECTORY_URL;

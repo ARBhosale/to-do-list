@@ -1,4 +1,4 @@
-package iQ.learning.todoapp.service;
+package iQ.learning.todoapp.service.task;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -81,31 +81,31 @@ doOnLoad = () => {
         }
     });
 
-    
+
     // Creating a Tree View.
     directoryTreeView = layout.cells("a").attachTreeView({
         json: "data/directory.json",
         iconset: "font_awesome",
-        dnd:true
+        dnd: true
     });
 
 
 };
 
-function fetchAllData(){
+function fetchAllData() {
     var allTasksApiUrl = "http://localhost:8080/task/v1/directory";
     fetch(allTasksApiUrl)
         .then((allDataResponse) => {
             return allDataResponse.json();
         })
-        .then((allData)=>{
+        .then((allData) => {
             directory = allData;
             console.log("All the data is loaded from the server");
             initializeGrid(layout);
-            
-        }).catch((error)=>console.log(error))
-        
-        
+
+        }).catch((error) => console.log(error))
+
+
 }
 
 function initializeGrid(layout) {
@@ -115,45 +115,46 @@ function initializeGrid(layout) {
     mygrid.setHeader("Name,Description,Status");//the headers of columns  
     mygrid.setInitWidths("100,400,100");          //the widths of columns  
     mygrid.setColAlign("center,center,center");
-    mygrid.attachEvent("onRowSelect",doOnRowSelected);       //the alignment of columns   
+    mygrid.attachEvent("onRowSelect", doOnRowSelected);       //the alignment of columns   
     mygrid.setColTypes("ro,ed,ed");                //the types of columns  
-    
+
     mygrid.init();//finishes initialization and renders the grid on the page 
     loadAllTasks(mygrid);
 
-}   
+}
 
 function loadAllTasks(grid) {
     var tasksData = { rows: [] };
-    var allTasks=directory.allTasks;
-    allTasks.forEach((task)=>{
+    var allTasks = directory.allTasks;
+    allTasks.forEach((task) => {
         tasksData.rows.push({
-            id: task.id, 
-            data:[
-                task.name, 
+            id: task.id,
+            data: [
+                task.name,
                 task.description,
                 task.status
             ]
         });
     });
     mygrid.parse(tasksData, "json");
-   
+
 }
 
-function doOnRowSelected(id){
-    var allTasks= directory.allTasks;
+function doOnRowSelected(id) {
+    var allTasks = directory.allTasks;
     var selectedTask = allTasks.filter(task => task.id == id);
     console.log(selectedTask);
     // layout.cells("d").detachForm();
     editToDo = layout.cells("d").attachForm();
     formData = [
-        {type:"fieldset", name:"data", label:"Edit To Do", inputWidth:"auto", 
-         list:[
-            {type:"input",offsetLeft:"15",    name:'editToDo', label:'Name', value: `${selectedTask[0].name}`},
-            {type:"input",offsetLeft:"15", name:"editToDoDescription", label:"Description", value: `${selectedTask[0].description}`},
-            {type:"input",offsetLeft:"15", name:"editToDoStatus", label:"Status", readonly:true, value: `${selectedTask[0].status}`},
-            {type:"button",   name:"completeTask", value:"Complete"},
-            {type:"button",   name:"deleteTask", value:"Delete"}] 
+        {
+            type: "fieldset", name: "data", label: "Edit To Do", inputWidth: "auto",
+            list: [
+                { type: "input", offsetLeft: "15", name: 'editToDo', label: 'Name', value: `${selectedTask[0].name}` },
+                { type: "input", offsetLeft: "15", name: "editToDoDescription", label: "Description", value: `${selectedTask[0].description}` },
+                { type: "input", offsetLeft: "15", name: "editToDoStatus", label: "Status", readonly: true, value: `${selectedTask[0].status}` },
+                { type: "button", name: "completeTask", value: "Complete" },
+                { type: "button", name: "deleteTask", value: "Delete" }]
         }
     ];
     console.log()
@@ -162,9 +163,9 @@ function doOnRowSelected(id){
 }
 
 
-function showToDoForm(addToDo){
-    addToDo.attachEvent("onButtonClick", function(name, command){
-        if(name=="addToDoBtn"){
+function showToDoForm(addToDo) {
+    addToDo.attachEvent("onButtonClick", function (name, command) {
+        if (name == "addToDoBtn") {
             var values = addToDo.getFormData();
             console.log(values);
             var newData;
@@ -183,15 +184,15 @@ function showToDoForm(addToDo){
                 body: JSON.stringify(newData)
             });
             fetch(request)
-            .then((response)=>{
-                return response.json();
-            })
-            .then((data)=>{
-                console.log(data);
-                directory.allTasks.push(data);
-                console.log(directory);
-                loadAllTasks(mygrid);
-            }).catch((error)=>{console.log(error);})
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    directory.allTasks.push(data);
+                    console.log(directory);
+                    loadAllTasks(mygrid);
+                }).catch((error) => { console.log(error); })
 
         }
     });
@@ -201,9 +202,9 @@ function showToDoForm(addToDo){
 
 };
 
-function handleAddFolderSubmit(addFolder){
-    addFolder.attachEvent("onButtonClick", function(name, command){
-        if(name=="addFolder"){
+function handleAddFolderSubmit(addFolder) {
+    addFolder.attachEvent("onButtonClick", function (name, command) {
+        if (name == "addFolder") {
             var values = this.getFormData();
             console.log(values);
             var newData;
@@ -221,14 +222,14 @@ function handleAddFolderSubmit(addFolder){
                 body: JSON.stringify(newData)
             });
             fetch(request)
-            .then((response)=>{
-                return response.json();
-            })
-            .then((data)=>{
-                directory.allFolders.push(data);
-                loadAllTasks(mygrid);
-                loadDirectory(layout);
-            }).catch((error)=>{console.log(error);})
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    directory.allFolders.push(data);
+                    loadAllTasks(mygrid);
+                    loadDirectory(layout);
+                }).catch((error) => { console.log(error); })
 
         }
     });
@@ -256,9 +257,54 @@ function loadDirectory(layout) {
                 iconset: "font_awesome",
                 dnd: true
             });
+            attachDragAndDropEvents(directoryTreeView);
         })
         .catch((error) => { console.error(error); });
 
+}
+
+function attachDragAndDropEvents(directoryTreeView) {
+    directoryTreeView.attachEvent("onDrop", function (id, pId, index) {
+        let directoryItemData = getDirectoryItemData(id);
+        if (null == directoryItemData) {
+            return;
+        }
+        updateParentFolder(directoryItemData, pId);
+    });
+}
+
+function updateParentFolder(item, newParentId) {
+    if (isFolder(item)) {
+
+    } else {
+        updateTaskParentFolder(item, newParentId);
+    }
+}
+
+function updateTaskParentFolder(task, newParentId) {
+    let taskUpdateURL = "http://localhost:8080/task/v1";
+    let taskUpdateRequest = {
+        taskId: task.id,
+        folderId: newParentId
+    };
+    task.folderId = newParentId;
+    var request = new Request(taskUpdateURL, {
+        method: 'PUT',
+        body: JSON.stringify(taskUpdateRequest),
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    fetch(request)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            loadAllTasks(mygrid);
+            loadDirectory(layout);
+        }).catch((error) => { console.error(error); })
 }
 
 function constructDirectory(directoryData) {
@@ -331,7 +377,7 @@ function getDirectoryItemFromFolder(folderMap, folderId) {
     let folderData = folderMap.get(folderId);
 
     let item = {
-        id: 'f' + folderData.folder.id,
+        id: folderData.folder.id,
         text: folderData.folder.name,
         kids: true,
         open: folderData.folder.parentFolderId == null ? 1 : 0,
@@ -342,7 +388,7 @@ function getDirectoryItemFromFolder(folderMap, folderId) {
 
 function getDirectoryItemFromTask(task) {
     let item = {
-        id: 't' + task.id,
+        id: task.id,
         text: task.name,
         kids: false,
         open: 1
@@ -368,4 +414,32 @@ function getDirectoryItems(folderMap, folderData) {
 function isFolder(item) {
     // folders have the field parentFolderId
     return item.parentFolderId != undefined;
+}
+
+function getDirectoryItemData(id) {
+    let task = getTaskData(id);
+    if (null == task) {
+        return getFolderData(id);
+    } else {
+        return task;
+    }
+}
+
+function getTaskData(id) {
+    for (let i = 0; i < directory.allTasks.length; i++) {
+        let task = directory.allTasks[i];
+        if (task.id == id) {
+            return task;
+        }
+    }
+    return null;
+}
+function getFolderData(id) {
+    for (let i = 0; i < directory.allFolders.length; i++) {
+        let folder = directory.allFolders[i];
+        if (folder.id == id) {
+            return folder;
+        }
+    }
+    return null;
 }

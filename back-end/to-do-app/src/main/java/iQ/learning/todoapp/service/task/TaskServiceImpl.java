@@ -52,10 +52,11 @@ public class TaskServiceImpl implements TaskService {
 		Optional<Task> task = taskRepository.findById(request.getTaskId());
 		if (task.isPresent()) {
 			Task taskToUpdate = task.get();
-			taskToUpdate.setStatus(request.getTaskStatus(request.getUpdatedStatus()));
-			Long folderId = request.getFolderId();
-			if (null != folderId) {
-				taskToUpdate.setFolderId(folderId);
+			if (null != request.getFolderId()) {
+				taskToUpdate.setFolderId(request.getFolderId());
+			}
+			if (0 != request.getUpdatedStatus()) {
+				taskToUpdate.setStatus(request.getTaskStatus(request.getUpdatedStatus()));
 			}
 
 			return taskRepository.save(task.get());

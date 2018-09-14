@@ -129,8 +129,8 @@ function showToDoForm(addToDoForm){
             })
             .then((data)=>{
                 directory.allTasks.push(data);
-                console.log(directory);
                 loadAllTasks(mygrid);
+                loadDirectory(layout);
             }).catch((error)=>{console.log(error);})
 
         }

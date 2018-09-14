@@ -59,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
 				taskToUpdate.setStatus(request.getTaskStatus(request.getUpdatedStatus()));
 			}
 
-			return taskRepository.save(task.get());
+			return taskRepository.save(taskToUpdate);
 		} else {
 			return null;
 		}

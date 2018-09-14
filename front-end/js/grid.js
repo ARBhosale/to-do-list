@@ -37,17 +37,25 @@ function doOnRowSelected(id){
     var allTasks= directory.allTasks;
     var selectedTask = allTasks.filter(task => task.id == id);
     editToDo = layout.cells("d").attachForm();
-    formData = [
+    var formData = [
         {type:"block", className:"changeUI", name:"data", label:"Edit To Do", inputWidth:"auto", 
          list:[
             {type:"label" ,name:'editToDo', label:`${selectedTask[0].name}`, className:"columnUI"},{type: "newcolumn", className:"columnUI" },
             {type:"label", name:"editToDoDescription", label:`${selectedTask[0].description}`, className:"columnUI"},{type: "newcolumn" , className:"columnUI"},
             {type:"label" , name:"editToDoStatus", label:`${selectedTask[0].status}`, className:"columnUI"},{type: "newcolumn", className:"columnUI"},
-            {type:"hidden",name:'toDoId', value: `${selectedTask[0].id}`},            
-            {type:"button",   name:"startTask", value:"Start" },
-            {type:"button",   name:"completeTask", value:"Complete"}] 
+            {type:"hidden",name:'toDoId', value: `${selectedTask[0].id}`}]            
         }
     ];
+
+    if(selectedTask[0].status === "New"){
+        console.log(formData);
+        formData[0].list.push({type:"button",   name:"startTask", value:"Start" });
+        formData[0].list.push({type:"button",   name:"completeTask", value:"Complete"});
+    }else if(selectedTask[0].status === "Started"){
+        formData[0].list.push({type:"button",   name:"completeTask", value:"Complete"});
+    }
+
+
     editToDo.loadStruct(formData);
     updateStatus(editToDo);
 }

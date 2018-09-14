@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import iQ.learning.todoapp.model.Folder;
 import iQ.learning.todoapp.model.Task;
 import iQ.learning.todoapp.model.request.folder.FolderCreateRequest;
+import iQ.learning.todoapp.model.request.folder.FolderUpdateRequest;
 import iQ.learning.todoapp.model.request.task.TaskCreateRequest;
 import iQ.learning.todoapp.model.request.task.TaskUpdateRequest;
 import iQ.learning.todoapp.model.response.TasksFolderStructureResponse;
@@ -28,7 +29,7 @@ public class TaskController {
 
 	@Autowired
 	TaskService taskService;
-	
+
 	@Autowired
 	FolderService folderService;
 
@@ -56,11 +57,17 @@ public class TaskController {
 	public ResponseEntity<TasksFolderStructureResponse> getDirectory() {
 		return new ResponseEntity<>(taskService.getDirectory(), HttpStatus.CREATED);
 	}
-	
+
 	@RequestMapping(path = "/folder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Folder> createTask(@RequestBody FolderCreateRequest createRequest) {
+	public ResponseEntity<Folder> createFolder(@RequestBody FolderCreateRequest createRequest) {
 		Folder newFolder = folderService.createFolder(createRequest);
 		return new ResponseEntity<>(newFolder, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(path = "/folder", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Folder> updateFolder(@RequestBody FolderUpdateRequest updateRequest) {
+		Folder updatedFolder = folderService.updateFolder(updateRequest);
+		return new ResponseEntity<>(updatedFolder, HttpStatus.CREATED);
 	}
 
 }

@@ -15,3 +15,8 @@ html, body {
 .icon_closed {
     background-image: url("../img/icon_folder_closed.gif");
 }
+
+.columnUI{
+    border: 1px solid #ccc;
+    padding:20px 40px !important;
+}

@@ -69,7 +69,7 @@ var doOnLoad = () => {
     showToDoForm(addToDoForm);
     toDoToolbar.attachEvent("onClick", function (id) {
         if (id === "addToDo") {
-            console.log("add to button clicked");
+            
             addToDoForm = layout.cells("d").attachForm();
             addToDoForm.loadStruct("data/addToDo.xml");
             showToDoForm(addToDoForm)
@@ -145,7 +145,7 @@ function handleAddFolderSubmit(addFolder) {
     addFolder.attachEvent("onButtonClick", function (name, command) {
         if (name == "addFolder") {
             var values = this.getFormData();
-            console.log(values);
+            
             var newData;
             newData = {
                 "name": values.newFolder

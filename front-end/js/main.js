@@ -275,10 +275,36 @@ function attachDragAndDropEvents(directoryTreeView) {
 
 function updateParentFolder(item, newParentId) {
     if (isFolder(item)) {
-
+        updateParentFolderForFolder(item, newParentId);
     } else {
         updateTaskParentFolder(item, newParentId);
     }
+}
+
+function updateParentFolderForFolder(folder, newParentId) {
+    let folderUpdateURL = "http://localhost:8080/task/v1/folder";
+    let folderUpdateRequest = {
+        folderId: folder.id,
+        folderName: folder.name,
+        parentFolderId: newParentId
+    }
+    var request = new Request(folderUpdateURL, {
+        method: 'PUT',
+        body: JSON.stringify(folderUpdateRequest),
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    fetch(request)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            loadAllTasks(mygrid);
+            loadDirectory(layout);
+        }).catch((error) => { console.error(error); })
 }
 
 function updateTaskParentFolder(task, newParentId) {
@@ -287,7 +313,6 @@ function updateTaskParentFolder(task, newParentId) {
         taskId: task.id,
         folderId: newParentId
     };
-    task.folderId = newParentId;
     var request = new Request(taskUpdateURL, {
         method: 'PUT',
         body: JSON.stringify(taskUpdateRequest),
